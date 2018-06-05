@@ -13,6 +13,13 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+
+        _ = TwitterService().getDefaultUser().done { (user) in
+
+            }.catch { (error) in
+
+
+        }
     }
 
     override func didReceiveMemoryWarning() {
