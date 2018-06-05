@@ -1,0 +1,20 @@
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '10.0'
+use_frameworks!
+
+def all_pods
+pod 'R.swift'
+pod 'Alamofire'
+pod 'PromiseKit'
+pod 'SwiftyJSON'
+pod 'SDWebImage'
+pod 'RxSwift', '~> 4.1'
+pod 'RxCocoa', '~> 4.1'
+pod 'RxDataSources', '~> 3.0'
+pod 'SwiftMessages'
+end
+
+
+target 'Twitter' do
+    all_pods
+end
