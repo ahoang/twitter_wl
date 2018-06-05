@@ -8,6 +8,10 @@
 
 import UIKit
 import SDWebImage
+import DateToolsSwift
+import RxSwift
+import RxCocoa
+import RxDataSources
 
 class TimelineViewController: UITableViewController {
 
@@ -16,65 +20,62 @@ class TimelineViewController: UITableViewController {
     @IBOutlet weak var handleLabel: UILabel!
     @IBOutlet weak var profileAvatar: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-    let service = TwitterService()
-    var tweets = [Tweet]()
-    var user: User?
+    
+    private let viewModel = TimelineViewModel()
+    private let disposeBag = DisposeBag()
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+        self.bindTableData()
+        self.viewModel.loadData()
+        self.viewModel.rx_name.bind(to: self.nameLabel.rx.text).disposed(by: self.disposeBag)
+        self.viewModel.rx_handle.bind(to: self.handleLabel.rx.text).disposed(by: self.disposeBag)
+        self.viewModel.rx_description.bind(to: self.descriptionlabel.rx.text).disposed(by: self.disposeBag)
+        self.viewModel.rx_profileImage.bind { [weak self] (url) in
+            self?.profileAvatar.sd_setImage(with: url, completed: nil)
+        }.disposed(by: self.disposeBag)
+        self.viewModel.rx_backgroundImage.bind { [weak self] (url) in
+            self?.backgroundImageView.sd_setImage(with: url, completed: nil)
+        }.disposed(by: self.disposeBag)
+    }
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+}
 
-        service.getTimeLineForDefaultUser().done { [weak self] (tweets) in
-            self?.tweets = tweets
-            self?.tableView.reloadData()
-            }.catch { (error) in
+extension TimelineViewController {
+    enum Section: Int, IdentifiableType {
+        case tweet
+
+        var identity: Int {
+            return self.rawValue
         }
-
-        service.getDefaultUser().done { [weak self] (user) in
-            self?.descriptionlabel.text = user.details
-            self?.nameLabel.text = user.name
-            self?.handleLabel.text = user.screenName
-            self?.profileAvatar.sd_setImage(with: user.profileImage, completed:nil)
-            self?.backgroundImageView.sd_setImage(with: user.profileBackgroundImage, completed: nil)
-            }.catch { (error) in
-
-        }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func bindTableData() {
+        typealias DataType = AnimatableSectionModel<Section, Tweet>
+
+        let dataSource = RxTableViewSectionedReloadDataSource<DataType>.init(configureCell: { (_, tableView, indexPath, tweet) -> UITableViewCell in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as? TweetCell else {
+                return UITableViewCell()
+            }
+
+            cell.tweetLabel.text = tweet.text
+            cell.handleLabel.text = "@" + tweet.user.screenName
+            cell.nameLabel.text = tweet.user.name
+            cell.avatarImageView.sd_setImage(with: tweet.user.profileImage, completed: nil)
+            cell.dateLabel.text = tweet.createdAt.shortTimeAgoSinceNow
+
+            return cell
+        })
+
+        tableView.dataSource = nil
+        self.viewModel.rx_tweets.map { (tweet) -> [DataType] in
+            return [AnimatableSectionModel.init(model: .tweet, items: tweet)]
+            }.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: self.disposeBag)
     }
+}
 
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+extension Tweet: IdentifiableType {
+    var identity: String {
+        return self.id
     }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return self.tweets.count
-    }
-
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as? TweetCell else {
-            return UITableViewCell()
-        }
-
-        let tweet = self.tweets[indexPath.row]
-        cell.tweetLabel.text = tweet.text
-        cell.handleLabel.text = "@" + tweet.user.screenName
-        cell.nameLabel.text = tweet.user.name
-        cell.avatarImageView.sd_setImage(with: tweet.user.profileImage, completed: nil)
-
-        return cell
-    }
-
 }

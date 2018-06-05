@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-struct Tweet {
+struct Tweet: Equatable {
 
     let id: String
     let text: String
@@ -42,5 +42,9 @@ struct Tweet {
         self.userMentions = userMentions.map{ $0.string}.compactMap{$0}
         self.urls = urls.map{ $0.string }.compactMap{ $0 }
         self.user = userInfo
+    }
+
+    static func == (lhs: Tweet, rhs: Tweet) -> Bool {
+        return lhs.id == rhs.id
     }
 }

@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (4.7.2)
+  - DateToolsSwift (4.0.0)
   - Differentiator (3.0.2)
   - PromiseKit (6.2.8):
     - PromiseKit/CorePromise (= 6.2.8)
@@ -30,6 +31,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - DateToolsSwift
   - PromiseKit
   - R.swift
   - RxCocoa (~> 4.1)
@@ -42,6 +44,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - DateToolsSwift
     - Differentiator
     - PromiseKit
     - R.swift
@@ -55,6 +58,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
   PromiseKit: 6788ce1a0ed5448b83d4aaf56b9fc49fb7647d32
   R.swift: d6a5ec2f55a8441dc0ed9f1f8b37d7d11ae85c66
@@ -66,6 +70,6 @@ SPEC CHECKSUMS:
   SwiftMessages: 2c33fdee8b8f38dfc7e1036684456b505891da8c
   SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
 
-PODFILE CHECKSUM: 656a6573a716314c035792255548181eebeff712
+PODFILE CHECKSUM: 5d36971b8544ba109b31ce2e690abbfcb7cd24f2
 
 COCOAPODS: 1.5.3
