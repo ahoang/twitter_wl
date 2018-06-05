@@ -42,7 +42,7 @@ class TimelineViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let detail = R.storyboard.main.tweetDetail() else { return }
         detail.viewModel = self.viewModel.viewModelForTweet(index: indexPath.row)
-        splitViewController?.showDetailViewController(detail, sender: nil)
+        self.splitViewController?.showDetailViewController(detail, sender: nil)
     }
 
 }
