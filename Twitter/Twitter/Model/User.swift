@@ -17,7 +17,7 @@ struct User {
     let details: String
     let followersCount: Int
     let friendsCount: Int
-//    let createdAt: Date?
+    let createdAt: Date
     let backgroundColor: String
     let profileBackgroundImage: URL
     let profileImage: URL
@@ -32,6 +32,7 @@ struct User {
             let followersCount = json["followers_count"].int,
             let friendsCount = json["friends_count"].int,
             let createdAtString = json["created_at"].string,
+            let createdAtdate = DateFormatter.twitterDateFormatter.date(from: createdAtString),
             let backgroundColor = json["profile_background_color"].string,
             let profileBGImagestring = json["profile_background_image_url"].string,
             let profileBackgroundImageURL = URL(string: profileBGImagestring),
@@ -49,7 +50,7 @@ struct User {
         self.details = description
         self.followersCount = followersCount
         self.friendsCount = friendsCount
-//        self.createdAt =
+        self.createdAt = createdAtdate
         self.backgroundColor = backgroundColor
         self.profileBackgroundImage = profileBackgroundImageURL
         self.profileImage = profileImageURL
