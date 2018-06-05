@@ -12,6 +12,7 @@ import DateToolsSwift
 import RxSwift
 import RxCocoa
 import RxDataSources
+import SwiftMessages
 
 class TimelineViewController: UITableViewController {
 
@@ -37,12 +38,28 @@ class TimelineViewController: UITableViewController {
         self.viewModel.rx_backgroundImage.bind { [weak self] (url) in
             self?.backgroundImageView.sd_setImage(with: url, completed: nil)
         }.disposed(by: self.disposeBag)
+
+        self.viewModel.rx_Error.bind { [weak self] (error) in
+            if let error = error {
+                self?.displayDiscreetError(error)
+            }
+        }.disposed(by: self.disposeBag)
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let detail = R.storyboard.main.tweetDetail() else { return }
         detail.viewModel = self.viewModel.viewModelForTweet(index: indexPath.row)
         self.splitViewController?.showDetailViewController(detail, sender: nil)
+    }
+
+    private func displayDiscreetError(_ message: String) {
+        let view = MessageView.viewFromNib(layout: .statusLine)
+        view.configureTheme(.error)
+        view.configureDropShadow()
+        view.configureContent(body: message)
+        var config = SwiftMessages.Config()
+        config.duration = .forever
+        SwiftMessages.show(config: config, view: view)
     }
 
 }

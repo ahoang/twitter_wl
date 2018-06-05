@@ -30,7 +30,7 @@ class TwitterService {
                 case .success(let data):
                     let json = JSON(data)
                     guard let user = User(json) else {
-                        resolver.reject(NSError(domain: "REPLACE", code: 0, userInfo: nil))
+                        resolver.reject(TwitterErrors.GenericError)
                         return
                     }
 
@@ -64,7 +64,7 @@ class TwitterService {
                     }).compactMap({ (tweet) -> Tweet? in
                         return tweet
                     }) else {
-                        resolver.reject(NSError(domain: "REPLACE", code: 0, userInfo: nil))
+                        resolver.reject(TwitterErrors.GenericError)
                         return
                     }
 
