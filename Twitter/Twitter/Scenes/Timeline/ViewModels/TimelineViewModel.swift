@@ -13,10 +13,10 @@ class TimelineViewModel {
 
     private var service = TwitterService()
     private var user = Variable<User?>(nil)
-    private var tweets = Variable<[Tweet]>([])
+    private var tweets = Variable<[TweetDetailViewModel]>([])
 
     var rx_profileImage: Observable<URL?> {
-        return user.asObservable().map { $0?.profileBackgroundImage }
+        return user.asObservable().map { $0?.profileImage }
     }
 
     var rx_backgroundImage: Observable<URL?> {
@@ -35,7 +35,7 @@ class TimelineViewModel {
         return user.asObservable().map { $0?.details }
     }
 
-    var rx_tweets: Observable<[Tweet]> {
+    var rx_tweets: Observable<[TweetDetailViewModel]> {
         return tweets.asObservable()
     }
 
@@ -47,10 +47,14 @@ class TimelineViewModel {
         }
 
         service.getTimeLineForDefaultUser().done { [weak self] (tweets) in
-            self?.tweets.value = tweets
+            self?.tweets.value = tweets.map { TweetDetailViewModel($0) }
             }.catch { (error) in
 
         }
+    }
+
+    func viewModelForTweet(index: Int) -> TweetDetailViewModel {
+        return self.tweets.value[index]
     }
 
 }

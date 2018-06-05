@@ -25,7 +25,7 @@ class TimelineViewController: UITableViewController {
     private let disposeBag = DisposeBag()
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.tableView.register(R.nib.tweetCell(), forCellReuseIdentifier: R.reuseIdentifier.tweetCell.identifier)
         self.bindTableData()
         self.viewModel.loadData()
         self.viewModel.rx_name.bind(to: self.nameLabel.rx.text).disposed(by: self.disposeBag)
@@ -37,6 +37,12 @@ class TimelineViewController: UITableViewController {
         self.viewModel.rx_backgroundImage.bind { [weak self] (url) in
             self?.backgroundImageView.sd_setImage(with: url, completed: nil)
         }.disposed(by: self.disposeBag)
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let detail = R.storyboard.main.tweetDetail() else { return }
+        detail.viewModel = self.viewModel.viewModelForTweet(index: indexPath.row)
+        splitViewController?.showDetailViewController(detail, sender: nil)
     }
 
 }
@@ -51,19 +57,14 @@ extension TimelineViewController {
     }
 
     func bindTableData() {
-        typealias DataType = AnimatableSectionModel<Section, Tweet>
+        typealias DataType = AnimatableSectionModel<Section, TweetDetailViewModel>
 
-        let dataSource = RxTableViewSectionedReloadDataSource<DataType>.init(configureCell: { (_, tableView, indexPath, tweet) -> UITableViewCell in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as? TweetCell else {
+        let dataSource = RxTableViewSectionedReloadDataSource<DataType>.init(configureCell: { (_, tableView, indexPath, viewModel) -> UITableViewCell in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.tweetCell, for: indexPath) else {
                 return UITableViewCell()
             }
-
-            cell.tweetLabel.text = tweet.text
-            cell.handleLabel.text = "@" + tweet.user.screenName
-            cell.nameLabel.text = tweet.user.name
-            cell.avatarImageView.sd_setImage(with: tweet.user.profileImage, completed: nil)
-            cell.dateLabel.text = tweet.createdAt.shortTimeAgoSinceNow
-
+             
+            cell.viewModel = viewModel
             return cell
         })
 
@@ -74,8 +75,8 @@ extension TimelineViewController {
     }
 }
 
-extension Tweet: IdentifiableType {
+extension TweetDetailViewModel: IdentifiableType {
     var identity: String {
-        return self.id
+        return self.tweet.id
     }
 }
