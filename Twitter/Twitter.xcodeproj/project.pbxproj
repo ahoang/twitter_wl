@@ -211,16 +211,8 @@
 			children = (
 				4A644C1020C732CF00FD1C21 /* Tweet Detail */,
 				4AE6D47320C7060400F61667 /* Timeline */,
-				4AE6D47220C705FF00F61667 /* Login */,
 			);
 			path = Scenes;
-			sourceTree = "<group>";
-		};
-		4AE6D47220C705FF00F61667 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Login;
 			sourceTree = "<group>";
 		};
 		4AE6D47320C7060400F61667 /* Timeline */ = {

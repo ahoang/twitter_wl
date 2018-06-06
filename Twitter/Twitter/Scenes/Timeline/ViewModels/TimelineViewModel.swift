@@ -29,7 +29,7 @@ class TimelineViewModel {
     }
 
     var rx_handle: Observable<String?> {
-        return user.asObservable().map { $0?.screenName }
+        return user.asObservable().map { "@" + ($0?.screenName ?? "") }
     }
 
     var rx_description: Observable<String?> {
