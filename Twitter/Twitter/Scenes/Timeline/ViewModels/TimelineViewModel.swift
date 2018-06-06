@@ -12,9 +12,9 @@ import RxSwift
 class TimelineViewModel {
 
     private var service = TwitterService()
-    private var user = Variable<User?>(nil)
-    private var tweets = Variable<[TweetDetailViewModel]>([])
-    private var errorMessage = Variable<String?>(nil)
+    private var user = BehaviorSubject<User?>(value: nil)
+    private var tweets = BehaviorSubject<[TweetDetailViewModel]>(value: [])
+    private var errorMessage = BehaviorSubject<String?>(value: nil)
 
     var rx_profileImage: Observable<URL?> {
         return user.asObservable().map { $0?.profileImage }
@@ -46,20 +46,26 @@ class TimelineViewModel {
 
     func loadData() {
         service.getDefaultUser().done { [weak self] (user) in
-            self?.user.value = user
+            self?.user.onNext(user)
             }.catch { [weak self] (error) in
-                self?.errorMessage.value = Constants.ProfileErrorMessage
+                self?.errorMessage.onNext(Constants.TweetsErrorMessage)
         }
 
         service.getTimeLineForDefaultUser().done { [weak self] (tweets) in
-            self?.tweets.value = tweets.map { TweetDetailViewModel($0) }
+            self?.tweets.onNext(tweets.map { TweetDetailViewModel($0) })
             }.catch { [weak self] (error) in
-                self?.errorMessage.value = Constants.TweetsErrorMessage
+                self?.errorMessage.onNext(Constants.TweetsErrorMessage)
         }
     }
 
-    func viewModelForTweet(index: Int) -> TweetDetailViewModel {
-        return self.tweets.value[index]
+    func viewModelForTweet(index: Int) -> TweetDetailViewModel? {
+        do {
+            return try self.tweets.value()[index]
+        } catch {
+            self.errorMessage.onNext(Constants.TweetsErrorMessage)
+        }
+
+        return nil
     }
 }
 
