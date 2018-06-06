@@ -24,19 +24,5 @@ class TweetCell: UITableViewCell {
             self.dateLabel.text = self.viewModel?.date
         }
     }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-        self.avatarImageView.layer.cornerRadius = 50 / 2
-        self.avatarImageView.layer.borderColor = UIColor.black.cgColor
-        self.avatarImageView.layer.borderWidth = 1
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
 
 }
