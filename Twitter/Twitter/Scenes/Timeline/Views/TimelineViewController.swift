@@ -78,7 +78,7 @@ extension TimelineViewController {
 
         let dataSource = RxTableViewSectionedReloadDataSource<DataType>.init(configureCell: { (_, tableView, indexPath, viewModel) -> UITableViewCell in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.tweetCell, for: indexPath) else {
-                return UITableViewCell()
+                fatalError("Misconfigured cell type!")
             }
              
             cell.viewModel = viewModel

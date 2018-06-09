@@ -15,16 +15,12 @@ class TwitterService {
 
     func getDefaultUser() -> Promise<User> {
         return Promise { (resolver) in
-            DispatchQueue.main.async {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            }
-
             let endpoint = "/api/user"
-            Alamofire.request(Constants.BaseUrl + endpoint).responseJSON(completionHandler: { (response) in
 
-                DispatchQueue.main.async {
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                }
+            var request = URLRequest(url: URL(string: Constants.BaseUrl + endpoint)!, cachePolicy: NSURLRequest.CachePolicy.returnCacheDataElseLoad, timeoutInterval: 30)
+            request.httpMethod = "GET"
+
+            Alamofire.request(request).responseJSON(completionHandler: { (response) in
 
                 switch response.result {
                 case .success(let data):
@@ -44,16 +40,13 @@ class TwitterService {
 
     func getTimeLineForDefaultUser() -> Promise<[Tweet]> {
         return Promise { (resolver) in
-            DispatchQueue.main.async {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            }
 
             let endpoint = "/api/statuses/user_timeline"
-            Alamofire.request(Constants.BaseUrl + endpoint).responseJSON(completionHandler: { (response) in
 
-                DispatchQueue.main.async {
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                }
+            var request = URLRequest(url: URL(string: Constants.BaseUrl + endpoint)!, cachePolicy: NSURLRequest.CachePolicy.returnCacheDataElseLoad, timeoutInterval: 30)
+            request.httpMethod = "GET"
+
+            Alamofire.request(request).responseJSON(completionHandler: { (response) in
 
                 switch response.result {
                 case .success(let data):

@@ -30,15 +30,13 @@ class TweetDetailViewController: UITableViewController {
         return self.viewModel == nil ? 0 : 1
     }
 
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.tweetCell, for: indexPath) else {
-            return UITableViewCell()
+            fatalError("Misconfigured cell type!")
         }
 
        cell.viewModel = self.viewModel
 
         return cell
     }
-
 }

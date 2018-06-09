@@ -20,7 +20,7 @@ class TweetDetailViewModel: Equatable {
     }
 
     var name: String {
-        return tweet.user.name
+        return "THIS IS A REALLY REALLY REALLY REALLY REALLY REALLY REALLY LONG NAME"
     }
 
     var avatar: URL {

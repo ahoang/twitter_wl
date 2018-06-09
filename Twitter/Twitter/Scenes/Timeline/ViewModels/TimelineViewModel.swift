@@ -17,27 +17,27 @@ class TimelineViewModel {
     private var errorMessage = BehaviorSubject<String?>(value: nil)
 
     var rx_profileImage: Observable<URL?> {
-        return user.asObservable().map { $0?.profileImage }
+        return user.map { $0?.profileImage }
     }
 
     var rx_backgroundImage: Observable<URL?> {
-        return user.asObservable().map { $0?.profileBackgroundImage }
+        return user.map { $0?.profileBackgroundImage }
     }
 
     var rx_name: Observable<String?> {
-        return user.asObservable().map { $0?.name }
+        return user.map { $0?.name }
     }
 
     var rx_handle: Observable<String?> {
-        return user.asObservable().map { "@" + ($0?.screenName ?? "") }
+        return user.map { "@" + ($0?.screenName ?? "") }
     }
 
     var rx_description: Observable<String?> {
-        return user.asObservable().map { $0?.details }
+        return user.map { $0?.details }
     }
 
     var rx_tweets: Observable<[TweetDetailViewModel]> {
-        return tweets.asObservable()
+        return tweets
     }
 
     var rx_Error: Observable<String?> {
@@ -54,7 +54,7 @@ class TimelineViewModel {
         service.getTimeLineForDefaultUser().done { [weak self] (tweets) in
             self?.tweets.onNext(tweets.map { TweetDetailViewModel($0) })
             }.catch { [weak self] (error) in
-                self?.errorMessage.onNext(Constants.TweetsErrorMessage)
+                self?.errorMessage.onNext(Constants.ProfileErrorMessage)
         }
     }
 
