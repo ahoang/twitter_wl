@@ -14,6 +14,7 @@ PODS:
   - R.swift (4.0.0):
     - R.swift.Library (~> 4.0.0)
   - R.swift.Library (4.0.0)
+  - ReSwift (4.0.1)
   - RxCocoa (4.1.2):
     - RxSwift (~> 4.0)
   - RxDataSources (3.0.2):
@@ -34,6 +35,7 @@ DEPENDENCIES:
   - DateToolsSwift
   - PromiseKit
   - R.swift
+  - ReSwift
   - RxCocoa (~> 4.1)
   - RxDataSources (~> 3.0)
   - RxSwift (~> 4.1)
@@ -49,6 +51,7 @@ SPEC REPOS:
     - PromiseKit
     - R.swift
     - R.swift.Library
+    - ReSwift
     - RxCocoa
     - RxDataSources
     - RxSwift
@@ -63,6 +66,7 @@ SPEC CHECKSUMS:
   PromiseKit: 6788ce1a0ed5448b83d4aaf56b9fc49fb7647d32
   R.swift: d6a5ec2f55a8441dc0ed9f1f8b37d7d11ae85c66
   R.swift.Library: c3af34921024333546e23b70e70d0b4e0cffca75
+  ReSwift: f4012c613e13da7398827fe5aebdb938eaed40a3
   RxCocoa: d88ba0f1f6abf040011a9eb4b539324fc426843a
   RxDataSources: cb7c31e652a87ebb919da45f716bbb87b3765f6b
   RxSwift: e49536837d9901277638493ea537394d4b55f570
@@ -70,6 +74,6 @@ SPEC CHECKSUMS:
   SwiftMessages: 2c33fdee8b8f38dfc7e1036684456b505891da8c
   SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
 
-PODFILE CHECKSUM: 5d36971b8544ba109b31ce2e690abbfcb7cd24f2
+PODFILE CHECKSUM: 4abb7543855f84bdacdf12f3cae5c822abcaf2a2
 
 COCOAPODS: 1.5.3

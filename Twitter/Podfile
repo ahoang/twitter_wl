@@ -13,6 +13,7 @@ pod 'RxCocoa', '~> 4.1'
 pod 'RxDataSources', '~> 3.0'
 pod 'SwiftMessages'
 pod 'DateToolsSwift'
+pod 'ReSwift'
 end
 
 
